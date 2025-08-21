@@ -1,12 +1,39 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import { Navigation } from '@/components/Navigation';
+import { HeroSection } from '@/components/HeroSection';
+import { DocumentUpload } from '@/components/DocumentUpload';
+import { FormEditor } from '@/components/FormEditor';
 
 const Index = () => {
+  const [activeTab, setActiveTab] = useState<'hero' | 'upload' | 'edit'>('hero');
+
+  const handleGetStarted = () => {
+    setActiveTab('upload');
+  };
+
+  const handleTabChange = (tab: 'upload' | 'edit') => {
+    setActiveTab(tab);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      {activeTab !== 'hero' && (
+        <Navigation activeTab={activeTab} onTabChange={handleTabChange} />
+      )}
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === 'hero' && (
+          <HeroSection onGetStarted={handleGetStarted} />
+        )}
+        
+        {activeTab === 'upload' && (
+          <DocumentUpload />
+        )}
+        
+        {activeTab === 'edit' && (
+          <FormEditor />
+        )}
+      </main>
     </div>
   );
 };
